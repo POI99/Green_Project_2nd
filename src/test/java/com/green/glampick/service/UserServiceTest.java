@@ -109,6 +109,8 @@ class UserServiceTest {
             assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
         }
     }
+
+
     @Test
     @DisplayName("리뷰가 있을 경우")
     void postExistReview() {
@@ -155,7 +157,7 @@ class UserServiceTest {
         dto.setReviewId(20);
         reviewEntity.setReviewId(dto.getReviewId());
 
-        when(reviewRepository.deleteById(dto.getReviewId());
+//        when(reviewRepository.deleteById(dto.getReviewId());
     }
 
     @Test
