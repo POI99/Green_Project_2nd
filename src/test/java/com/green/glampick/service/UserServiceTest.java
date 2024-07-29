@@ -7,6 +7,7 @@ import com.green.glampick.dto.request.user.PostReviewRequestDto;
 import com.green.glampick.dto.response.user.PostReviewResponseDto;
 import com.green.glampick.entity.ReservationCompleteEntity;
 import com.green.glampick.entity.ReviewEntity;
+import com.green.glampick.entity.ReviewImageEntity;
 import com.green.glampick.repository.GlampingStarRepository;
 import com.green.glampick.repository.ReservationCompleteRepository;
 import com.green.glampick.repository.ReviewImageRepository;
@@ -26,12 +27,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -71,7 +73,7 @@ class UserServiceTest {
         reviewEntity.setReviewStarPoint(dto.getReviewStarPoint());
 //        dto.setReservationId(93);
 //        dto.setReviewContent("Great experience!");
-// given(); 객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
+// given(); //객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
 // dto.getReviewStarPoint() 가  5인지 검증
         int starPoint = dto.getReviewStarPoint();
@@ -110,8 +112,6 @@ class UserServiceTest {
             assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
         }
     }
-
-
     @Test
     @DisplayName("리뷰가 있을 경우")
     void postExistReview() {
@@ -152,14 +152,29 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("리뷰 삭제 확인")
     void deleteReview() {
-        DeleteReviewRequestDto dto = new DeleteReviewRequestDto();
         ReviewEntity reviewEntity = new ReviewEntity();
-        dto.setReviewId(20);
-//        reviewEntity.setReviewId(dto.getReviewId());
-//        doNothing().when(reviewRepository).deleteById(dto.getReviewId());
-//        when(reviewRepository.deleteById(dto.getReviewId());
+        reviewEntity.setReviewId(20);
 
+        reviewRepository.deleteById(reviewEntity.getReviewId());
+
+
+        verify(reviewRepository, times(1)).deleteById(reviewEntity.getReviewId());
+        when(reviewRepository.findById(reviewEntity.getReviewId())).thenReturn(Optional.empty());
+        assertFalse(reviewRepository.findById(reviewEntity.getReviewId()).isPresent(), "리뷰 삭제 실패!!");
+    }
+    @Test
+    @DisplayName("리뷰이미지 삭제 확인")
+    void deleteImageReview() {
+        ReviewImageEntity reviewImageEntity = new ReviewImageEntity();
+        when(customFileUtils.makeFolders("%d/%d",reviewImageEntity.getReviewImageId()));
+        reviewRepository.deleteById(reviewEntity.getReviewId());
+
+
+        verify(reviewRepository, times(1)).deleteById(reviewEntity.getReviewId());
+        when(reviewRepository.findById(reviewEntity.getReviewId())).thenReturn(Optional.empty());
+        assertFalse(reviewRepository.findById(reviewEntity.getReviewId()).isPresent(), "리뷰 삭제 실패!!");
     }
 
     @Test
