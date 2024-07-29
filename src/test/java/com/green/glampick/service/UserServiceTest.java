@@ -168,17 +168,19 @@ class UserServiceTest {
     @DisplayName("리뷰이미지 삭제 확인")
     void deleteImageReview() {
         ReviewImageEntity reviewImageEntity = new ReviewImageEntity();
-        when(customFileUtils.makeFolders("%d/%d",reviewImageEntity.getReviewImageId()));
-        reviewRepository.deleteById(reviewEntity.getReviewId());
+        String imageFold = String.format("%d/%d",reviewImageEntity.getReviewImageId(),reviewImageEntity.getReviewId());
+        when(customFileUtils.makeFolders(imageFold)).thenReturn("폴더 생성??");
+        reviewRepository.deleteById(reviewImageEntity.getReviewId());
 
 
-        verify(reviewRepository, times(1)).deleteById(reviewEntity.getReviewId());
-        when(reviewRepository.findById(reviewEntity.getReviewId())).thenReturn(Optional.empty());
-        assertFalse(reviewRepository.findById(reviewEntity.getReviewId()).isPresent(), "리뷰 삭제 실패!!");
+        verify(reviewRepository, times(1)).deleteById(reviewImageEntity.getReviewId());
+        when(reviewRepository.findById(reviewImageEntity.getReviewId())).thenReturn(Optional.empty());
+        assertFalse(reviewRepository.findById(reviewImageEntity.getReviewId()).isPresent(), "리뷰(이미지) 삭제 실패!!");
     }
 
     @Test
     void getReview() {
+
     }
 
     @Test
