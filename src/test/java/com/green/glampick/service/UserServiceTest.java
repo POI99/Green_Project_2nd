@@ -71,22 +71,17 @@ class UserServiceTest {
 
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setReviewStarPoint(dto.getReviewStarPoint());
-//        dto.setReservationId(93);
-//        dto.setReviewContent("Great experience!");
-// given(); //객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
-        when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
-// dto.getReviewStarPoint() 가  5인지 검증
-        int starPoint = dto.getReviewStarPoint();
-//        boolean StarPoint = (starPoint >= 0 && starPoint <= 5);
-        if (starPoint >= 0 && starPoint <= 5) {
-//                       assertEquals(starPoint, dto.getReviewStarPoint(), "0~5사이의 별점 입력");
-            assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
 
-        }else {
+        when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
+        int starPoint = dto.getReviewStarPoint();
+        if (starPoint >= 0 && starPoint <= 5) {
+            assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
+        } else {
             assertEquals(starPoint, dto.getReviewStarPoint(), "0~5를 벗어남");
 
         }
     }
+
     @Test
     @DisplayName("별점범위 내 코드 검사")
     void postStarInReview() {
@@ -107,11 +102,12 @@ class UserServiceTest {
 //                       assertEquals(starPoint, dto.getReviewStarPoint(), "0~5사이의 별점 입력");
             assertEquals(starPoint, dto.getReviewStarPoint(), "0~5를 벗어남");
 
-        }else {
+        } else {
 
             assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
         }
     }
+
     @Test
     @DisplayName("리뷰가 있을 경우")
     void postExistReview() {
@@ -126,11 +122,12 @@ class UserServiceTest {
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
 // dto.getReviewStarPoint() 가  5인지 검증
         String review = dto.getReviewContent();
-        boolean ExistReview = (review !=null);
-        assertTrue(ExistReview,"리뷰가 있어요");
+        boolean ExistReview = (review != null);
+        assertTrue(ExistReview, "리뷰가 있어요");
 
 
     }
+
     @Test
     @DisplayName("리뷰가 없는 경우")
     void postNotExistReview() {
@@ -145,8 +142,8 @@ class UserServiceTest {
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
 // dto.getReviewStarPoint() 가  5인지 검증
         String review = dto.getReviewContent();
-        boolean ExistReview = (review ==null);
-        assertTrue(ExistReview,"리뷰가 없어요");
+        boolean ExistReview = (review == null);
+        assertTrue(ExistReview, "리뷰가 없어요");
 
 
     }
@@ -164,11 +161,12 @@ class UserServiceTest {
         when(reviewRepository.findById(reviewEntity.getReviewId())).thenReturn(Optional.empty());
         assertFalse(reviewRepository.findById(reviewEntity.getReviewId()).isPresent(), "리뷰 삭제 실패!!");
     }
+
     @Test
     @DisplayName("리뷰이미지 삭제 확인")
     void deleteImageReview() {
         ReviewImageEntity reviewImageEntity = new ReviewImageEntity();
-        String imageFold = String.format("%d/%d",reviewImageEntity.getReviewImageId(),reviewImageEntity.getReviewId());
+        String imageFold = String.format("%d/%d", reviewImageEntity.getReviewImageId(), reviewImageEntity.getReviewId());
         when(customFileUtils.makeFolders(imageFold)).thenReturn("폴더 생성??");
         reviewRepository.deleteById(reviewImageEntity.getReviewId());
 
@@ -179,7 +177,34 @@ class UserServiceTest {
     }
 
     @Test
-    void getReview() {
+    @DisplayName("유효한 사용자 ID를 사용한 리뷰 조회")
+    void getLogInReview() {
+        ReviewEntity reviewEntity = new ReviewEntity();
+
+
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 사용자 ID를 사용한 예외 처리")
+    void getnuLogInReview() {
+        ReviewEntity reviewEntity = new ReviewEntity();
+
+
+    }
+
+    @Test
+    @DisplayName("데이터베이스 오류 처리")
+    void getDBErrorReview() {
+        ReviewEntity reviewEntity = new ReviewEntity();
+
+
+    }
+
+    @Test
+    @DisplayName("리뷰와 이미지가 올바르게 매핑되는지 확인")
+    void getReviewOrImage() {
+        ReviewEntity reviewEntity = new ReviewEntity();
+
 
     }
 
