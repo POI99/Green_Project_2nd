@@ -30,6 +30,7 @@ import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -155,9 +156,10 @@ class UserServiceTest {
         DeleteReviewRequestDto dto = new DeleteReviewRequestDto();
         ReviewEntity reviewEntity = new ReviewEntity();
         dto.setReviewId(20);
-        reviewEntity.setReviewId(dto.getReviewId());
-
+//        reviewEntity.setReviewId(dto.getReviewId());
+//        doNothing().when(reviewRepository).deleteById(dto.getReviewId());
 //        when(reviewRepository.deleteById(dto.getReviewId());
+
     }
 
     @Test
