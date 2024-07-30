@@ -3,7 +3,9 @@ package com.green.glampick.service;
 import com.green.glampick.common.CustomFileUtils;
 import com.green.glampick.dto.ResponseDto;
 import com.green.glampick.dto.request.user.DeleteReviewRequestDto;
+import com.green.glampick.dto.request.user.GetReviewRequestDto;
 import com.green.glampick.dto.request.user.PostReviewRequestDto;
+import com.green.glampick.dto.response.user.GetFavoriteGlampingResponseDto;
 import com.green.glampick.dto.response.user.PostReviewResponseDto;
 import com.green.glampick.entity.ReservationCompleteEntity;
 import com.green.glampick.entity.ReviewEntity;
@@ -12,6 +14,7 @@ import com.green.glampick.repository.GlampingStarRepository;
 import com.green.glampick.repository.ReservationCompleteRepository;
 import com.green.glampick.repository.ReviewImageRepository;
 import com.green.glampick.repository.ReviewRepository;
+import com.green.glampick.repository.resultset.GetFavoriteGlampingResultSet;
 import com.green.glampick.security.AuthenticationFacade;
 import com.green.glampick.service.implement.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +30,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.awaitility.Awaitility.given;
@@ -172,7 +177,56 @@ class UserServiceTest {
     @Test
     @DisplayName("유효한 사용자 ID를 사용한 리뷰 조회")
     void getLogInReview() {
+        List<ReviewEntity> list1 = new ArrayList<>();
         ReviewEntity reviewEntity = new ReviewEntity();
+        reviewEntity.setUserId(authenticationFacade.getLoginUserId());
+        reviewEntity.setReviewContent("너무 별로에요");
+        reviewEntity.setGlampId(1);
+        reviewEntity.setReviewComment("방문해 주셔서 ㄳㄳ 개ㄳ");
+        reviewEntity.setReviewId(2);
+        reviewEntity.setReservationId(4);
+        reviewEntity.setReviewStarPoint(4);
+
+        list1.add(reviewEntity);
+
+
+        List<ReviewEntity> list2 =new ArrayList<>();
+        long uid = 1;
+        when(reviewRepository.findById(uid)).thenReturn(Optional.of(reviewEntity));
+
+        Optional<ReviewEntity> foundReview = reviewRepository.findById(uid);
+
+        List<ReviewEntity> list3 = new ArrayList<>();
+        reviewEntity.setUserId(authenticationFacade.getLoginUserId());
+        reviewEntity.setReviewContent("너무 별로에요");
+        reviewEntity.setGlampId(1);
+        reviewEntity.setReviewComment("방문해 주셔서 ㄳㄳ 개ㄳ");
+        reviewEntity.setReviewId(2);
+        reviewEntity.setReservationId(4);
+        reviewEntity.setReviewStarPoint(4);
+
+        list3.add(reviewEntity);
+
+        assertEquals(list1, foundReview, "동일");
+
+
+
+
+//        assertEquals(list2, list1,"동일");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
@@ -210,9 +264,25 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("유효한 사용자 ID를 사용하여 정보 수정")
     void updateUser() {
     }
-
+    @Test
+    @DisplayName("수정 사항이 하나도 입력되지 않은 경우")
+    void updateNotDateUser() {
+    }
+    @Test
+    @DisplayName("유효하지 않은 사용자 ID")
+    void updateNotUser() {
+    }
+    @Test
+    @DisplayName("존재하지 않는 사용자")
+    void updateExistUser() {
+    }
+    @Test
+    @DisplayName("중복된 닉네임")
+    void updateOverUser() {
+    }
     @Test
     void deleteUser() {
     }
