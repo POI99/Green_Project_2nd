@@ -91,19 +91,16 @@ class UserServiceTest {
 
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setReviewStarPoint(dto.getReviewStarPoint());
-//        dto.setReservationId(93);
-//        dto.setReviewContent("Great experience!");
+
 // given(); 객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
-// dto.getReviewStarPoint() 가  5인지 검증
+
         int starPoint = dto.getReviewStarPoint();
-//        boolean StarPoint = (starPoint >= 0 && starPoint <= 5);
+
         if (starPoint >= 0 && starPoint <= 5) {
-//                       assertEquals(starPoint, dto.getReviewStarPoint(), "0~5사이의 별점 입력");
+
             assertEquals(starPoint, dto.getReviewStarPoint(), "0~5를 벗어남");
-
         } else {
-
             assertNotEquals(starPoint, dto.getReviewStarPoint(), "0~5사이 입니다.");
         }
     }
@@ -116,11 +113,9 @@ class UserServiceTest {
         dto.setReviewContent("리뷰 있어요!!");
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setReviewStarPoint(dto.getReviewStarPoint());
-//        dto.setReservationId(93);
 
-// given(); 객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
-// dto.getReviewStarPoint() 가  5인지 검증
+
         String review = dto.getReviewContent();
         boolean ExistReview = (review != null);
         assertTrue(ExistReview, "리뷰가 있어요");
@@ -133,14 +128,12 @@ class UserServiceTest {
     void postNotExistReview() {
 
         PostReviewRequestDto dto = new PostReviewRequestDto();
-//        dto.setReviewContent();
+
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setReviewStarPoint(dto.getReviewStarPoint());
-//        dto.setReservationId(93);
 
-// given(); 객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
         when(reviewRepository.save(reviewEntity)).thenReturn(new ReviewEntity(dto));
-// dto.getReviewStarPoint() 가  5인지 검증
+
         String review = dto.getReviewContent();
         boolean ExistReview = (review == null);
         assertTrue(ExistReview, "리뷰가 없어요");
